@@ -5,7 +5,6 @@ ActiveRecord::Migration.verbose = false
 ActiveRecord::Migration.create_table :employees
 ActiveRecord::Migration.create_table :baby_boomers
 load "dummy/db/schema.rb"
-ActiveRecord::Migrator.up "db/migrate"
 
 def human_roles
   %i( partier rocker )
@@ -32,24 +31,24 @@ describe "Testing class-level scopes" do
   end
 
   it "Has named scopes" do
-    Employee.available_role_names.must_equal human_roles_strings
+    expect(Employee.available_role_names).must_equal human_roles_strings
   end
 
   it "Owner named scopes return owners with role" do
     employee = Employee.create
-    Employee.partiers.include?(employee).must_equal false
+    expect(Employee.partiers.include?(employee)).must_equal false
     employee.add_role :partier
-    Employee.partiers.include?(employee).must_equal true
-    Employee.rockers.include?(employee).must_equal false
+    expect(Employee.partiers.include?(employee)).must_equal true
+    expect(Employee.rockers.include?(employee)).must_equal false
   end
 
   it "Named scope updates for tag removal deletion" do
     employee = Employee.create
     employee.add_role :rocker
-    Employee.rockers.include?(employee).must_equal true
+    expect(Employee.rockers.include?(employee)).must_equal true
     employee.remove_role :rocker
-    Employee.rockers.include?(employee).must_equal false
-    Employee.rockers.count.must_equal 0
+    expect(Employee.rockers.include?(employee)).must_equal false
+    expect(Employee.rockers.count).must_equal 0
   end
 
 
@@ -60,16 +59,14 @@ describe "Testing class-level scopes" do
 
     it "exist for single word models" do
       count.times{ Employee.create.add_role 'partier' }
-      the_role.employees.count.must_equal count
+      expect(the_role.employees.count).must_equal count
     end
 
     it "exist for two word models" do
       count.times { BabyBoomer.create.add_role 'partier' }
-      the_role.baby_boomers.count.must_equal count
+      expect(the_role.baby_boomers.count).must_equal count
     end
 
   end
-
-
 
 end

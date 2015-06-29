@@ -13,10 +13,12 @@ class CreateRoyce < ActiveRecord::Migration
 
     create_table :royce_role do |t|
       t.string :name, null: false
+      t.references :authorizable, polymorphic: true
       t.timestamps
     end
 
     add_index :royce_role, :name
+    add_index :royce_role, [ :authorizable_type, :authorizable_id ]
 
   end
 end

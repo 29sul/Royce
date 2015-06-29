@@ -6,4 +6,5 @@ module Royce
     belongs_to :roleable, polymorphic: true
     belongs_to :role, class_name: 'Royce::Role'
   end
+
 end
